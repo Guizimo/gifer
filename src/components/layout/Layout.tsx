@@ -24,7 +24,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
             <div className="flex items-center space-x-4">
               <a
-                href="https://github.com/guizimo"
+                href="https://github.com/guizimo/gifer"
+                title='在浏览器中打开'
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:opacity-80"

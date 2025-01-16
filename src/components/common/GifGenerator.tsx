@@ -1,5 +1,8 @@
 import React from 'react';
 import { invoke } from '@tauri-apps/api/core';
+
+
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -40,25 +43,22 @@ const GifGenerator = () => {
     if (!previewGif) return;
     
     try {
-      // 从 base64 URL 中提取数据部分
-      const base64Data = previewGif.replace(/^data:image\/gif;base64,/, '');
-      
-      // 使用 Tauri 的 save 对话框
-      const filePath = await window.__TAURI__.dialog.save({
+      // 使用 Tauri 的 save dialog
+      const filePath = await save({
         filters: [{
           name: 'GIF Image',
           extensions: ['gif']
-        }],
-        defaultPath: 'generated.gif'
+        }]
       });
-
+  
       if (filePath) {
-        // 将 base64 数据写入文件
-        await window.__TAURI__.fs.writeBinaryFile({
-          path: filePath,
-          contents: base64Data
-        });
-
+        // 转换 base64 为二进制
+        const base64Data = previewGif.split(',')[1];
+        const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+        
+        // 保存文件
+        await writeBinaryFile(filePath, binaryData);
+  
         toast({
           title: "成功",
           description: "GIF 已保存！",
