@@ -57,3 +57,50 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* 美化滚动条 */
+@layer utilities {
+  /* 细滚动条 */
+  .scrollbar-thin {
+    scrollbar-width: thin; /* Firefox */
+    
+    /* Webkit (Chrome, Safari, Edge) */
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(var(--primary), 0.2);
+      border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(var(--primary), 0.3);
+    }
+  }
+
+  /* 隐藏滚动条但保持可滚动 */
+  .scrollbar-none {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    
+    &::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+  }
+
+  /* 深色模式适配 */
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--primary), 0.3);
+  }
+  
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(var(--primary), 0.4);
+  }
+}
