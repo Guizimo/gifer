@@ -8,9 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "tauri:desktop": "tauri dev",
-    "tauri:android": "tauri android dev",
-    "tauri:ios": "tauri ios dev",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\""
   },
