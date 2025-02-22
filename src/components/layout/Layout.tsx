@@ -19,7 +19,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-2">
               <img className="h-12 w-12" src={logoIcons} alt="Gifer" />
-              <span className="text-lg font-semibold">一款名为 Gifer 的 GIF 工具</span>
+              <span className="text-lg font-semibold">Gifer</span>
             </div>
 
             <div className="flex items-center space-x-4">
