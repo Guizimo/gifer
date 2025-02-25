@@ -172,7 +172,7 @@ const GifGenerator = () => {
         })
       );
 
-      const result: string = await invoke('generate_gif', {
+      const result = await invoke('generate_gif', {
         imageData: imageBase64s,
         options: {
           fps,
@@ -182,7 +182,7 @@ const GifGenerator = () => {
           repeat,
           optimization,
           delay,
-          animation, // 添加动画参数
+          animation,
         },
       });
 
@@ -456,15 +456,25 @@ const GifGenerator = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-1 items-center justify-center overflow-auto px-4 pt-20 pb-24">
-              {previewGif ? (
+              {isGenerating ? (
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  <div className="relative">
+                    <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-xs font-medium text-primary">GIF</span>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground animate-pulse">生成中，请稍候...</p>
+                </div>
+              ) : previewGif ? (
                 <img
                   src={previewGif}
                   alt="Generated GIF"
-                  className="max-h-[600px] max-w-full rounded-lg object-contain"
+                  className="max-w-full max-h-[calc(100vh-16rem)] object-contain rounded-lg"
                 />
               ) : (
                 <div className="text-center text-muted-foreground">
-                  <p>生成 GIF 后在此处预览</p>
+                  <p className="text-sm">生成 GIF 后在此处预览</p>
                 </div>
               )}
             </CardContent>

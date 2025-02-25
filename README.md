@@ -4,6 +4,8 @@ A elegant GIF maker tool built with Tauri 2.0, offering an intuitive user interf
 
 一个优雅的 GIF 制作工具，基于 Tauri 2.0 构建，提供直观的用户界面和强大的图片处理功能。
 
+![Gifer](./public/screenshots/home.png)
+
 ## ✨ Features | 特性
 
 - 🖼️ Multi-image Import & Management | 支持多图片导入和管理
@@ -77,6 +79,12 @@ gifer/
 
 ```bash
 pnpm tauri icon src/assets/logo.png
+```
+
+### Add Compoment
+
+```bash
+pnpm dlx shadcn@latest add xxx
 ```
 
 ## 🤝 Contributing | 贡献
