@@ -167,11 +167,28 @@ const GifGenerator = () => {
       const imageBase64s = await Promise.all(
         images.map(async (img) => {
           if (!img.blob) return '';
-          const buffer = await img.blob.arrayBuffer();
-          return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+          
+          // 使用 FileReader 读取文件为 base64，这种方式更可靠
+          return new Promise<string>((resolve) => {
+            const reader: any = new FileReader();
+            reader.onloadend = () => {
+              // 确保返回的是完整的 base64 字符串（包含 data:image 前缀）
+              const base64 = reader.result as string;
+              // 只提取 base64 部分，去掉 data:image/xxx;base64, 前缀
+              const base64Data = base64.split(',')[1];
+              resolve(base64Data);
+            };
+            reader.readAsDataURL(img.blob);
+          });
         })
       );
 
+      // 确保所有图片都成功转换
+      if (imageBase64s.some(img => !img)) {
+        throw new Error('部分图片处理失败');
+      }
+
+      // 调用 Tauri 命令生成 GIF - 修复 repeat 参数类型
       const result = await invoke('generate_gif', {
         imageData: imageBase64s,
         options: {
@@ -179,20 +196,32 @@ const GifGenerator = () => {
           quality,
           width,
           height,
-          repeat,
+          // 将数字转换为字符串，保持与后端期望的类型一致
+          repeat: repeat.toString(), // 直接使用选择的字符串值
           optimization,
           delay,
           animation,
         },
       });
 
-      setPreviewGif(result);
+      // 确保结果是有效的 base64 字符串
+      if (typeof result === 'string') {
+        // 如果返回的结果不包含 data:image 前缀，添加它
+        const gifBase64 = result.startsWith('data:') 
+          ? result 
+          : `data:image/gif;base64,${result}`;
+        
+        setPreviewGif(gifBase64);
 
-      toast({
-        title: '成功',
-        description: 'GIF 生成成功！',
-      });
+        toast({
+          title: '成功',
+          description: 'GIF 生成成功！',
+        });
+      } else {
+        throw new Error('生成的 GIF 数据格式不正确');
+      }
     } catch (error) {
+      console.error('GIF 生成错误:', error);
       toast({
         title: '错误',
         description: String(error),
