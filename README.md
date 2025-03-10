@@ -2,7 +2,7 @@
 
 A elegant GIF maker tool built with Tauri 2.0, offering an intuitive user interface and powerful image processing capabilities.
 
-一个优雅的 GIF 制作工具，基于 Tauri 2.0 构建，提供直观的用户界面和强大的图片处理功能。
+一个优雅的开发者工具箱，基于 Tauri 2.0 构建，提供直观的用户界面和强大的图片处理功能。
 
 ![Gifer](./public/screenshots/home.png)
 
