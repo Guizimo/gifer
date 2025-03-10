@@ -14,7 +14,8 @@
       {
         "title": "gifer",
         "width": 1200,
-        "height": 900
+        "height": 900,
+        "decorations": true
       }
     ],
     "security": {

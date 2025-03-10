@@ -98,3 +98,9 @@ pnpm dlx shadcn@latest add xxx
 ## 📄 License | 许可
 
 MIT License © 2025 [Guizimo](https://github.com/guizimo)
+
+
+## 
+
+打开开发者模式:
+在 Windows/Linux 上按`Ctrl+Shift+I` ，在 macOS 上按`Command+Option+I`
