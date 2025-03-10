@@ -1,5 +1,7 @@
 import React from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { save } from '@tauri-apps/plugin-dialog';
+import { writeFile } from '@tauri-apps/plugin-fs';
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -71,37 +73,39 @@ const GifGenerator = () => {
   const downloadGif = async () => {
     if (!previewGif) return;
 
-    // try {
-    //   // 使用 Tauri 的 save dialog
-    //   const filePath = await save({
-    //     filters: [
-    //       {
-    //         name: 'GIF Image',
-    //         extensions: ['gif'],
-    //       },
-    //     ],
-    //   });
+    try {
+      // 使用 Tauri 的 save dialog
+      const filePath = await save({
+        filters: [
+          {
+            name: 'GIF 图像',
+            extensions: ['gif'],
+          },
+        ],
+        defaultPath: 'animation.gif'
+      });
 
-    //   if (filePath) {
-    //     // 转换 base64 为二进制
-    //     const base64Data = previewGif.split(',')[1];
-    //     const binaryData = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
+      if (filePath) {
+        // 转换 base64 为二进制
+        const base64Data = previewGif.split(',')[1];
+        const binaryData = Uint8Array.from(atob(base64Data), (c) => c.charCodeAt(0));
 
-    //     // 保存文件
-    //     await writeBinaryFile(filePath, binaryData);
+        // 保存文件 - 使用 writeFile 替代 writeBinaryFile
+        await writeFile(filePath, binaryData);
 
-    //     toast({
-    //       title: '成功',
-    //       description: 'GIF 已保存！',
-    //     });
-    //   }
-    // } catch (error) {
-    //   toast({
-    //     title: '错误',
-    //     description: String(error),
-    //     variant: 'destructive',
-    //   });
-    // }
+        toast({
+          title: '成功',
+          description: 'GIF 已保存！',
+        });
+      }
+    } catch (error) {
+      console.error('下载 GIF 错误:', error);
+      toast({
+        title: '错误',
+        description: String(error),
+        variant: 'destructive',
+      });
+    }
   };
 
   // 处理拖拽结束

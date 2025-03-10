@@ -1,10 +1,10 @@
-use base64::{Engine as _, engine::general_purpose};
+use base64::{engine::general_purpose, Engine as _};
+use gif::{Encoder, Frame, Repeat};
 use image::{imageops, DynamicImage, GenericImageView, ImageBuffer, Rgba};
-use std::path::PathBuf;
 use std::fs::File;
 use std::io::Cursor;
+use std::path::PathBuf;
 use tauri::command;
-use gif::{Frame, Encoder, Repeat};
 
 #[derive(serde::Deserialize)]
 pub struct GifOptions {
@@ -22,16 +22,15 @@ pub struct GifOptions {
 pub async fn generate_gif(image_data: Vec<String>, options: GifOptions) -> Result<String, String> {
     // 创建临时输出路径
     let output_path = std::env::temp_dir().join("output.gif");
-    
+
     // 解码 base64 并转换为图片
     let mut images: Vec<DynamicImage> = Vec::new();
     for data in image_data {
         let bytes = general_purpose::STANDARD
             .decode(data)
             .map_err(|e| e.to_string())?;
-            
-        let img = image::load_from_memory(&bytes)
-            .map_err(|e| e.to_string())?;
+
+        let img = image::load_from_memory(&bytes).map_err(|e| e.to_string())?;
         images.push(img);
     }
 
@@ -44,9 +43,9 @@ pub async fn generate_gif(image_data: Vec<String>, options: GifOptions) -> Resul
 
     // 创建 GIF 文件
     let file = File::create(&output_path).map_err(|e| e.to_string())?;
-    let mut encoder = Encoder::new(file, width as u16, height as u16, &[])
-        .map_err(|e| e.to_string())?;
-    
+    let mut encoder =
+        Encoder::new(file, width as u16, height as u16, &[]).map_err(|e| e.to_string())?;
+
     // 设置循环
     let repeat = match options.repeat.as_str() {
         "none" => Repeat::Finite(0),
@@ -61,7 +60,6 @@ pub async fn generate_gif(image_data: Vec<String>, options: GifOptions) -> Resul
     };
     encoder.set_repeat(repeat).map_err(|e| e.to_string())?;
 
-
     // 设置帧延迟
     let delay = (options.delay / 10) as u16; // 转换为 1/100 秒单位
 
@@ -73,7 +71,7 @@ pub async fn generate_gif(image_data: Vec<String>, options: GifOptions) -> Resul
     //         "zoom" => apply_zoom_effect(img, i, images.len()),
     //         _ => Frame::from_rgb(width as u16, height as u16, &img.to_rgb8()),
     //     };
-        
+
     //     frame.delay = delay;
     //     encoder.write_frame(&frame).map_err(|e| e.to_string())?;
     // }
@@ -82,10 +80,10 @@ pub async fn generate_gif(image_data: Vec<String>, options: GifOptions) -> Resul
     for img in images {
         let resized = img.resize(width, height, image::imageops::FilterType::Lanczos3);
         let rgb_img = resized.to_rgb8();
-        
+
         let mut frame = Frame::from_rgb(width as u16, height as u16, &rgb_img);
         frame.delay = delay;
-        
+
         encoder.write_frame(&frame).map_err(|e| e.to_string())?;
     }
 
