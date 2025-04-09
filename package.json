@@ -1,7 +1,7 @@
 {
   "name": "gifer",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,10 @@
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\""
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
+    "release": "standard-version",
+    "release:major": "standard-version --release-as major",
+    "release:minor": "standard-version --release-as minor"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^17.0.0",
@@ -37,18 +40,25 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@tauri-apps/cli": "^2",
     "@types/node": "^22.10.6",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "clsx": "^2.1.1",
+    "husky": "^9.1.7",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.10",
     "shadcn-ui": "^0.9.4",
+    "standard-version": "^9.5.0",
     "tailwind-merge": "^2.6.0",
     "typescript": "~5.6.2",
     "vite": "^6.0.3"
+  },
+  "lint-staged": {
+    "src/*.{js,ts,tsx,json}": "prettier --write ."
   },
   "packageManager": "pnpm@9.15.0+sha1.8bfdb6d72b4d5fdf87d21d27f2bfbe2b21dd2629"
 }
