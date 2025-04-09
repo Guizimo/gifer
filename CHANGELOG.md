@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/guizimo/gifer/compare/v0.1.1...v0.1.2) (2025-04-09)
+
+
+### 🔧 其他
+
+* 添加 husky 和 commitlint 配置 ([1765c04](https://github.com/guizimo/gifer/commits/1765c04192136c422304510a9e9767f08f0b728a))
+
+
+### ✨ 新功能
+
+* **scripts:** 添加更新 Cargo.toml 版本号的脚本 ([6a555e3](https://github.com/guizimo/gifer/commits/6a555e3f001badac4a9465431dff7a6ecfae24aa))
+
 ### 0.1.1 (2025-04-09)
 
 
