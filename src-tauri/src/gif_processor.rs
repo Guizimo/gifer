@@ -1,21 +1,13 @@
 use base64::{engine::general_purpose, Engine as _};
 use gif::{Encoder, Frame, Repeat};
-use image::{imageops, DynamicImage, GenericImageView, ImageBuffer, Rgba};
+use image::{DynamicImage, GenericImageView};
 use std::fs::File;
-use std::io::Cursor;
-use std::path::PathBuf;
 use tauri::command;
 
 #[derive(serde::Deserialize)]
 pub struct GifOptions {
-    fps: i32,
-    quality: i32,
-    width: u32,
-    height: u32,
     repeat: String,
-    optimization: i32,
     delay: i32,
-    animation: String,
 }
 
 #[command]
@@ -88,7 +80,7 @@ pub async fn generate_gif(image_data: Vec<String>, options: GifOptions) -> Resul
     }
 
     // 返回生成的 GIF 文件的 data URL
-    let mut gif_data = std::fs::read(&output_path).map_err(|e| e.to_string())?;
+    let gif_data = std::fs::read(&output_path).map_err(|e| e.to_string())?;
     let base64_gif = general_purpose::STANDARD.encode(&gif_data);
     Ok(format!("data:image/gif;base64,{}", base64_gif))
 }
