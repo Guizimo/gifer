@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/guizimo/gifer/compare/v0.1.6...v1.0.1) (2025-04-09)
+
+
+### 📦 构建
+
+* 更新 gifer 依赖版本至 0.1.7 并优化版本更新脚本 ([283925d](https://github.com/guizimo/gifer/commits/283925d276a2992369ee65178ef6254e9a775012))
+
+
+### 🔧 其他
+
+* 更新版本号至 0.1.6 并自动提交更改 ([165e402](https://github.com/guizimo/gifer/commits/165e40228e6581c251efd287ed0533d1e6f43294))
+* **release:** 0.1.7 ([b94b509](https://github.com/guizimo/gifer/commits/b94b5099ce1ff881e78227f269a4ad683cf60d64))
+* **release:** 0.1.8 ([385a203](https://github.com/guizimo/gifer/commits/385a2032bf393bbf045600981540441661e60051))
+* **release:** 1.0.0 ([465b68e](https://github.com/guizimo/gifer/commits/465b68e59087e84f4241d4dbd1e2140eb761fef0))
+
+
+### 👷 CI
+
+* 更新发布工作流以自动生成版本更新日志 ([0610705](https://github.com/guizimo/gifer/commits/0610705eec6a1a08e7c2024bb490ce064e7c14cc))
+* 更新发布流程以包含创建发布步骤 ([c35788c](https://github.com/guizimo/gifer/commits/c35788c4a72747e4e140e193092d7eda178bf38e))
+
 ## [1.0.0](https://github.com/guizimo/gifer/compare/v0.1.6...v1.0.0) (2025-04-09)
 
 
