@@ -12,9 +12,9 @@
     "tauri:build": "tauri build",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
-    "release": "standard-version",
-    "release:major": "standard-version --release-as major",
-    "release:minor": "standard-version --release-as minor"
+    "release": "standard-version && node scripts/update-version.js",
+    "release:major": "standard-version --release-as major && node scripts/update-version.js",
+    "release:minor": "standard-version --release-as minor && node scripts/update-version.js"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^17.0.0",
