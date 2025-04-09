@@ -43,9 +43,8 @@ jobs:
         id: get_changelog
         run: |
           version=$(echo "${{ github.ref }}" | sed 's/refs\/tags\/v//')
-          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
-          sed -n "/## \[$version\]/,/## \[/p" CHANGELOG.md | sed '$d' >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "VERSION=$version" >> $GITHUB_ENV
+          node scripts/get-changelog.ts $version >> $GITHUB_ENV
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
@@ -53,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: 'Gifer v__VERSION__'
+          releaseName: 'Gifer v${{ env.VERSION }}'
           releaseBody: ${{ env.CHANGELOG }}
           releaseDraft: true
           prerelease: false

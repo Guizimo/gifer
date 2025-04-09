@@ -23,14 +23,20 @@ const version = packageJson.version;
 const cargoPath = join(__dirname, '../src-tauri/Cargo.toml');
 let cargoContent = readFileSync(cargoPath, 'utf8');
 
+// 读取 tauri.conf.json
+const tauriConfigPath = join(__dirname, '../src-tauri/tauri.conf.json');
+let tauriConfig = JSON.parse(readFileSync(tauriConfigPath, 'utf8'));
+
 // 更新版本号
 cargoContent = cargoContent.replace(
   /version = "(.*?)"/,
   `version = "${version}"`
 );
+tauriConfig.version = version;
 
 // 写入文件
 writeFileSync(cargoPath, cargoContent, 'utf8');
+writeFileSync(tauriConfigPath, JSON.stringify(tauriConfig, null, 2) + '\n', 'utf8');
 
 // 更新 Cargo.lock
 try {
@@ -39,8 +45,9 @@ try {
   // 提交更改
   execSync('git add src-tauri/Cargo.toml', { stdio: 'inherit' });
   execSync('git add src-tauri/Cargo.lock', { stdio: 'inherit' });
+  execSync('git add src-tauri/tauri.conf.json', { stdio: 'inherit' });
   execSync(`git commit --amend --no-edit`, { stdio: 'inherit' });
-  console.log(`已更新 Cargo.toml 版本号到 ${version} 并提交更改`);
+  console.log(`已更新版本号到 ${version} 并提交更改`);
 } catch (error) {
   console.error('提交更改时出错:', error);
   process.exit(1);
