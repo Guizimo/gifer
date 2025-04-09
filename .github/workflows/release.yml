@@ -42,9 +42,8 @@ jobs:
       - name: Get version changelog
         id: get_changelog
         run: |
-          version=$(echo "${{ github.ref }}" | sed 's/refs\/tags\/v//')
-          echo "VERSION=$version" >> $GITHUB_ENV
-          node scripts/get-changelog.ts $version >> $GITHUB_ENV
+          echo "VERSION=$(npx tsx scripts/get-version.ts)" >> $GITHUB_ENV
+          npx tsx scripts/get-changelog.ts $(npx tsx scripts/get-version.ts) >> $GITHUB_ENV
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
