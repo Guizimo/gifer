@@ -9,6 +9,3 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **scripts:** 优化版本输出信息以增加可读性 ([84a5f3e](https://github.com/guizimo/gifer/commit/84a5f3e71d493cc6ab6525091904e77f2e716624))
 
-# Changelog
-
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
