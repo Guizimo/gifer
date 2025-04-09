@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { execSync } from 'child_process';
 
 interface PackageJson {
   version: string;
@@ -31,4 +32,12 @@ cargoContent = cargoContent.replace(
 // 写入文件
 writeFileSync(cargoPath, cargoContent, 'utf8');
 
-console.log(`已更新 Cargo.toml 版本号到 ${version}`);
+// 提交更改
+try {
+  execSync('git add src-tauri/Cargo.toml src-tauri/Cargo.lock', { stdio: 'inherit' });
+  execSync(`git commit --amend --no-edit`, { stdio: 'inherit' });
+  console.log(`已更新 Cargo.toml 版本号到 ${version} 并提交更改`);
+} catch (error) {
+  console.error('提交更改时出错:', error);
+  process.exit(1);
+}
