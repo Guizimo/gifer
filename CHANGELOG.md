@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/guizimo/gifer/compare/v0.1.2...v0.1.3) (2025-04-09)
+
+
+### ♻️ 重构
+
+* **scripts:** 将 update-version.js 迁移至 TypeScript ([fd2deed](https://github.com/guizimo/gifer/commits/fd2deedbc18ba9a8f92e5b8db264e62335ddf44e))
+
 ### [0.1.2](https://github.com/guizimo/gifer/compare/v0.1.1...v0.1.2) (2025-04-09)
 
 
