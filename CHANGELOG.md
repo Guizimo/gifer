@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/guizimo/gifer/compare/v0.1.6...v0.1.7) (2025-04-09)
+
+
+### 🔧 其他
+
+* 更新版本号至 0.1.6 并自动提交更改 ([165e402](https://github.com/guizimo/gifer/commits/165e40228e6581c251efd287ed0533d1e6f43294))
+
 ### [0.1.6](https://github.com/guizimo/gifer/compare/v0.1.5...v0.1.6) (2025-04-09)
 
 ### [0.1.5](https://github.com/guizimo/gifer/compare/v0.1.4...v0.1.5) (2025-04-09)
