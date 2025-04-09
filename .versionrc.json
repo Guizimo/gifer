@@ -10,7 +10,5 @@
     {"type": "build", "section": "📦 构建", "hidden": true},
     {"type": "ci", "section": "👷 CI", "hidden": true},
     {"type": "chore", "section": "🔧 其他", "hidden": true}
-  ],
-  "commitUrlFormat": "https://github.com/guizimo/gifer/commits/{{hash}}",
-  "compareUrlFormat": "https://github.com/guizimo/gifer/compare/{{previousTag}}...{{currentTag}}"
+  ]
 }
