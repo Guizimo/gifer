@@ -39,30 +39,21 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install
 
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: 'Gifer v${{ github.ref_name }}'
-          body: |
-            请查看 [CHANGELOG.md](https://github.com/guizimo/gifer/blob/main/CHANGELOG.md) 了解详细更新内容。
-          draft: false
-          prerelease: false
+      - name: Get version changelog
+        id: get_changelog
+        run: |
+          version=$(echo "${{ github.ref }}" | sed 's/refs\/tags\/v//')
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          sed -n "/## \[$version\]/,/## \[/p" CHANGELOG.md | sed '$d' >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          releaseId: ${{ steps.create_release.outputs.id }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts-${{ matrix.platform }}
-          path: |
-            src-tauri/target/release/bundle/dmg/*.dmg
-            src-tauri/target/release/bundle/msi/*.msi
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Gifer v__VERSION__'
+          releaseBody: ${{ env.CHANGELOG }}
+          releaseDraft: true
+          prerelease: false
