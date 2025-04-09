@@ -1431,7 +1431,7 @@ dependencies = [
 
 [[package]]
 name = "gifer"
-version = "0.1.0"
+version = "0.1.3"
 dependencies = [
  "base64 0.21.7",
  "gif 0.12.0",
