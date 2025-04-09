@@ -3,6 +3,12 @@ import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { execSync } from 'child_process';
+import { getNextVersion } from './get-next-version.js';
+
+const type = process.argv[2] || 'patch';
+// 定义版本类型
+type VersionType = 'patch' | 'minor' | 'major';
+const nextVersion = getNextVersion(type as VersionType);
 
 interface PackageJson {
   version: string;
@@ -12,12 +18,7 @@ interface PackageJson {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// 读取 package.json
-const packageJson = JSON.parse(
-  readFileSync(join(__dirname, '../package.json'), 'utf8')
-) as PackageJson;
-
-const version = packageJson.version;
+const version = nextVersion;
 
 // 读取 Cargo.toml
 const cargoPath = join(__dirname, '../src-tauri/Cargo.toml');

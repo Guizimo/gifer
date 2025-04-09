@@ -12,10 +12,9 @@
     "tauri:build": "tauri build",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
-    "release": "standard-version && tsx scripts/update-version.ts",
-    "release:patch": "standard-version --release-as patch && tsx scripts/update-version.ts",
-    "release:major": "standard-version --release-as major && tsx scripts/update-version.ts",
-    "release:minor": "standard-version --release-as minor && tsx scripts/update-version.ts"
+    "release:patch": "tsx scripts/update-version.ts patch && standard-version --release-as patch",
+    "release:minor": "tsx scripts/update-version.ts minor && standard-version --release-as minor",
+    "release:major": "tsx scripts/update-version.ts major && standard-version --release-as major"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^17.0.0",
@@ -52,6 +51,7 @@
     "husky": "^9.1.7",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.10",
+    "semver": "^7.7.1",
     "shadcn-ui": "^0.9.4",
     "standard-version": "^9.5.0",
     "tailwind-merge": "^2.6.0",

@@ -105,6 +105,9 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: ^0.6.10
         version: 0.6.10(prettier@3.4.2)
+      semver:
+        specifier: ^7.7.1
+        version: 7.7.1
       shadcn-ui:
         specifier: ^0.9.4
         version: 0.9.4(typescript@5.6.3)
