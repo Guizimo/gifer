@@ -2,14 +2,14 @@
   "types": [
     {"type": "feat", "section": "✨ 新功能"},
     {"type": "fix", "section": "🐛 Bug 修复"},
-    {"type": "docs", "section": "📝 文档"},
-    {"type": "style", "section": "💄 样式"},
-    {"type": "refactor", "section": "♻️ 重构"},
-    {"type": "perf", "section": "⚡️ 性能优化"},
-    {"type": "test", "section": "✅ 测试"},
-    {"type": "build", "section": "📦 构建"},
-    {"type": "ci", "section": "👷 CI"},
-    {"type": "chore", "section": "🔧 其他"}
+    {"type": "docs", "section": "📝 文档", "hidden": true},
+    {"type": "style", "section": "💄 样式", "hidden": true},
+    {"type": "refactor", "section": "♻️ 重构", "hidden": true},
+    {"type": "perf", "section": "⚡️ 性能优化", "hidden": true},
+    {"type": "test", "section": "✅ 测试", "hidden": true},
+    {"type": "build", "section": "📦 构建", "hidden": true},
+    {"type": "ci", "section": "👷 CI", "hidden": true},
+    {"type": "chore", "section": "🔧 其他", "hidden": true}
   ],
   "commitUrlFormat": "https://github.com/guizimo/gifer/commits/{{hash}}",
   "compareUrlFormat": "https://github.com/guizimo/gifer/compare/{{previousTag}}...{{currentTag}}"
