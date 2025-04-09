@@ -32,8 +32,11 @@ cargoContent = cargoContent.replace(
 // 写入文件
 writeFileSync(cargoPath, cargoContent, 'utf8');
 
-// 提交更改
+// 更新 Cargo.lock
 try {
+  execSync('cd src-tauri && cargo check', { stdio: 'inherit' });
+  
+  // 提交更改
   execSync('git add src-tauri/Cargo.toml', { stdio: 'inherit' });
   execSync('git add src-tauri/Cargo.lock', { stdio: 'inherit' });
   execSync(`git commit --amend --no-edit`, { stdio: 'inherit' });

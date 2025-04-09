@@ -11,6 +11,8 @@ jobs:
       matrix:
         platform: [macos-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,17 +39,25 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install
 
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: 'Gifer v${{ github.ref_name }}'
+          body: |
+            请查看 [CHANGELOG.md](https://github.com/guizimo/gifer/blob/main/CHANGELOG.md) 了解详细更新内容。
+          draft: false
+          prerelease: false
+
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: 'Gifer v${{ github.ref_name }}'
-          releaseBody: |
-            请查看 [CHANGELOG.md](https://github.com/guizimo/gifer/blob/main/CHANGELOG.md) 了解详细更新内容。
-          releaseDraft: false
-          prerelease: false
+          releaseId: ${{ steps.create_release.outputs.id }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
