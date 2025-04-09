@@ -13,6 +13,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\"",
     "release": "standard-version && tsx scripts/update-version.ts",
+    "release:patch": "standard-version --release-as patch && tsx scripts/update-version.ts",
     "release:major": "standard-version --release-as major && tsx scripts/update-version.ts",
     "release:minor": "standard-version --release-as minor && tsx scripts/update-version.ts"
   },
