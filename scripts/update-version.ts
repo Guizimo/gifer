@@ -34,7 +34,8 @@ writeFileSync(cargoPath, cargoContent, 'utf8');
 
 // 提交更改
 try {
-  execSync('git add src-tauri/Cargo.toml src-tauri/Cargo.lock', { stdio: 'inherit' });
+  execSync('git add src-tauri/Cargo.toml', { stdio: 'inherit' });
+  execSync('git add src-tauri/Cargo.lock', { stdio: 'inherit' });
   execSync(`git commit --amend --no-edit`, { stdio: 'inherit' });
   console.log(`已更新 Cargo.toml 版本号到 ${version} 并提交更改`);
 } catch (error) {
