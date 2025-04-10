@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.5](https://github.com/guizimo/gifer/compare/v1.1.4...v1.1.5) (2025-04-10)
+
+
+### ✨ 新功能
+
+* **gif_processor:** 使用 gifski 和 rayon 优化 GIF 生成性能 ([bd62362](https://github.com/guizimo/gifer/commit/bd62362282cacf77c808b55312f933422e9f31d0)), closes [#1](https://github.com/guizimo/gifer/issues/1)
+* **GifGenerator:** 添加质量和快速模式选项到GIF生成器 ([bb3afa2](https://github.com/guizimo/gifer/commit/bb3afa253c9f02d886e521e196e76e322c1a2b31))
+* **GifGenerator:** 添加GIF生成时间统计 ([3fd5050](https://github.com/guizimo/gifer/commit/3fd505097516fcbabb15e1e3aaae9d4636334e6e))
+
 ### [1.1.4](https://github.com/guizimo/gifer/compare/v0.1.6...v1.1.4) (2025-04-09)
 
 
