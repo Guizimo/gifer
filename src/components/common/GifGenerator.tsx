@@ -164,6 +164,7 @@ const GifGenerator = () => {
 
     setIsGenerating(true);
     try {
+      const startTime = performance.now();
       // 将图片数据转换为 base64 字符串
       const imageBase64s = await Promise.all(
         images.map(async (img) => {
@@ -207,9 +208,12 @@ const GifGenerator = () => {
 
         setPreviewGif(gifBase64);
 
+        const endTime = performance.now();
+        const timeInSeconds = ((endTime - startTime) / 1000).toFixed(2);
+
         toast({
           title: '成功',
-          description: 'GIF 生成成功！',
+          description: `GIF 生成成功！用时 ${timeInSeconds} 秒`,
         });
       } else {
         throw new Error('生成的 GIF 数据格式不正确');
