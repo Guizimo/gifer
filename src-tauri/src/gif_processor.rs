@@ -11,6 +11,8 @@ use gifski::{Settings, progress::NoProgress};
 pub struct GifOptions {
     repeat: String,
     delay: i32,
+    quality: i32,
+    fast: bool
 }
 
 #[command]
@@ -67,8 +69,8 @@ pub async fn generate_gif(image_data: Vec<String>, options: GifOptions) -> Resul
     let settings = Settings {
         width: Some(width as u32),
         height: Some(height as u32),
-        quality: 90,
-        fast: true, // 高质量模式
+        quality: options.quality as u8,
+        fast: options.fast, // 高质量模式
         repeat: match options.repeat.as_str() {
             "none" => gifski::Repeat::Finite(1),
             "infinite" => gifski::Repeat::Infinite,

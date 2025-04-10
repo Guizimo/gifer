@@ -27,25 +27,18 @@ interface ImageFile {
 const GifGenerator = () => {
   // 定义默认参数
   const defaultParams = {
-    fps: 24,
-    quality: 80,
-    width: 500,
-    height: 500,
+    quality: 90,
     repeat: 'infinite',
-    optimization: 3,
     delay: 1000,
-    animation: 'none',
+    fast: false,
   };
 
   // 状态定义
-  const [fps, setFps] = React.useState(defaultParams.fps);
   const [quality, setQuality] = React.useState(defaultParams.quality);
-  const [width, setWidth] = React.useState(defaultParams.width);
-  const [height, setHeight] = React.useState(defaultParams.height);
   const [repeat, setRepeat] = React.useState(defaultParams.repeat);
-  const [optimization, setOptimization] = React.useState(defaultParams.optimization);
   const [delay, setDelay] = React.useState(defaultParams.delay);
-  const [animation, setAnimation] = React.useState(defaultParams.animation);
+  const [fast, setFast] = React.useState(defaultParams.fast);
+  const [imageSize, setImageSize] = React.useState({ width: 0, height: 0 });
 
   const [previewGif, setPreviewGif] = React.useState<string | null>(null);
   const [images, setImages] = React.useState<ImageFile[]>([]);
@@ -55,14 +48,10 @@ const GifGenerator = () => {
 
   // 恢复默认值函数
   const resetToDefaults = () => {
-    setFps(defaultParams.fps);
     setQuality(defaultParams.quality);
-    setWidth(defaultParams.width);
-    setHeight(defaultParams.height);
     setRepeat(defaultParams.repeat);
-    setOptimization(defaultParams.optimization);
     setDelay(defaultParams.delay);
-    setAnimation(defaultParams.animation);
+    setFast(defaultParams.fast);
 
     toast({
       title: '已重置',
@@ -82,7 +71,7 @@ const GifGenerator = () => {
             extensions: ['gif'],
           },
         ],
-        defaultPath: 'animation.gif'
+        defaultPath: 'animation.gif',
       });
 
       if (filePath) {
@@ -141,6 +130,14 @@ const GifGenerator = () => {
         blob: file,
       }))
     );
+    // 获取第一张图片的尺寸
+    if (newImages.length > 0 && !imageSize.width) {
+      const img = new Image();
+      img.src = newImages[0].preview;
+      img.onload = () => {
+        setImageSize({ width: img.width, height: img.height });
+      };
+    }
     setImages((prev) => [...prev, ...newImages]);
   };
 
@@ -171,7 +168,7 @@ const GifGenerator = () => {
       const imageBase64s = await Promise.all(
         images.map(async (img) => {
           if (!img.blob) return '';
-          
+
           // 使用 FileReader 读取文件为 base64，这种方式更可靠
           return new Promise<string>((resolve) => {
             const reader: any = new FileReader();
@@ -188,7 +185,7 @@ const GifGenerator = () => {
       );
 
       // 确保所有图片都成功转换
-      if (imageBase64s.some(img => !img)) {
+      if (imageBase64s.some((img) => !img)) {
         throw new Error('部分图片处理失败');
       }
 
@@ -196,25 +193,18 @@ const GifGenerator = () => {
       const result = await invoke('generate_gif', {
         imageData: imageBase64s,
         options: {
-          fps,
           quality,
-          width,
-          height,
-          // 将数字转换为字符串，保持与后端期望的类型一致
           repeat: repeat.toString(), // 直接使用选择的字符串值
-          optimization,
           delay,
-          animation,
+          fast,
         },
       });
 
       // 确保结果是有效的 base64 字符串
       if (typeof result === 'string') {
         // 如果返回的结果不包含 data:image 前缀，添加它
-        const gifBase64 = result.startsWith('data:') 
-          ? result 
-          : `data:image/gif;base64,${result}`;
-        
+        const gifBase64 = result.startsWith('data:') ? result : `data:image/gif;base64,${result}`;
+
         setPreviewGif(gifBase64);
 
         toast({
@@ -242,13 +232,13 @@ const GifGenerator = () => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* 图片上传管理区域 */}
           <Card className="relative flex h-[calc(100vh-10rem)] flex-col bg-card md:col-span-1">
-          <CardHeader className="absolute rounded-t-lg left-0 p-4 right-0 top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-gray-950/80">
-            <CardTitle className="flex items-center gap-2 text-lg font-medium">
+            <CardHeader className="absolute left-0 right-0 top-0 z-50 rounded-t-lg border-b bg-white/80 p-4 backdrop-blur-sm dark:bg-gray-950/80">
+              <CardTitle className="flex items-center gap-2 text-lg font-medium">
                 <Upload className="h-5 w-5" />
                 图片管理
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 overflow-y-auto px-4 pt-20 pb-24">
+            <CardContent className="flex-1 overflow-y-auto px-4 pb-24 pt-20">
               <div
                 className="rounded-lg border-2 border-dashed border-primary/20 p-6 text-center transition-colors hover:border-primary/40 dark:bg-card/50"
                 onDragOver={(e) => e.preventDefault()}
@@ -313,7 +303,7 @@ const GifGenerator = () => {
               </DragDropContext>
             </CardContent>
 
-            <div className="absolute border-t rounded-b-lg border-border p-4 left-0 right-0 bottom-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-gray-950/80">
+            <div className="absolute bottom-0 left-0 right-0 z-50 rounded-b-lg border-b border-t border-border bg-white/80 p-4 backdrop-blur-sm dark:bg-gray-950/80">
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
@@ -339,44 +329,31 @@ const GifGenerator = () => {
 
           {/* 参数控制区域 */}
           <Card className="relative flex h-[calc(100vh-10rem)] flex-col bg-card md:col-span-1">
-            <CardHeader className="absolute rounded-t-lg left-0 p-4 right-0 top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-gray-950/80">
+            <CardHeader className="absolute left-0 right-0 top-0 z-50 rounded-t-lg border-b bg-white/80 p-4 backdrop-blur-sm dark:bg-gray-950/80">
               <CardTitle className="flex items-center gap-2 text-lg font-medium">
                 <Settings className="h-5 w-5" />
                 参数设置
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 space-y-6 overflow-auto px-4 pt-20 pb-24">
+            <CardContent className="flex-1 space-y-6 overflow-auto px-4 pb-24 pt-20">
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label>宽度</Label>
                   <input
                     type="number"
-                    value={width}
-                    onChange={(e) => setWidth(Number(e.target.value))}
-                    className="w-full rounded-md border px-3 py-2"
+                    value={imageSize.width}
+                    disabled
+                    className="w-full rounded-md border bg-muted px-3 py-2"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>高度</Label>
                   <input
                     type="number"
-                    value={height}
-                    onChange={(e) => setHeight(Number(e.target.value))}
-                    className="w-full rounded-md border px-3 py-2"
+                    value={imageSize.height}
+                    disabled
+                    className="w-full rounded-md border bg-muted px-3 py-2"
                   />
-                </div>
-              </div>
-              <div className="space-y-4">
-                <Label>帧率 (FPS)</Label>
-                <div className="flex items-center gap-4">
-                  <Slider
-                    value={[fps]}
-                    onValueChange={([value]) => setFps(value)}
-                    max={60}
-                    step={1}
-                    className="flex-1"
-                  />
-                  <span className="w-12 text-right">{fps}</span>
                 </div>
               </div>
               <div className="space-y-4">
@@ -392,22 +369,6 @@ const GifGenerator = () => {
                   />
                   <span className="w-16 text-right">{delay}ms</span>
                 </div>
-              </div>
-
-              {/* 动画效果 */}
-              <div className="space-y-2">
-                <Label>动画效果</Label>
-                <Select value={animation} onValueChange={setAnimation}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">无效果</SelectItem>
-                    <SelectItem value="fade">淡入淡出</SelectItem>
-                    <SelectItem value="slide">滑动</SelectItem>
-                    <SelectItem value="zoom">缩放</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
 
               <div className="space-y-4">
@@ -438,24 +399,20 @@ const GifGenerator = () => {
               </div>
 
               <div className="space-y-2">
-                <Label>优化级别</Label>
-                <Select
-                  value={optimization.toString()}
-                  onValueChange={(v) => setOptimization(Number(v))}
-                >
+                <Label>快速模式</Label>
+                <Select value={fast.toString()} onValueChange={(v) => setFast(v === 'true')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="1">低</SelectItem>
-                    <SelectItem value="3">中</SelectItem>
-                    <SelectItem value="5">高</SelectItem>
+                    <SelectItem value="false">关闭</SelectItem>
+                    <SelectItem value="true">开启</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </CardContent>
 
-            <div className="absolute border-t rounded-b-lg border-border p-4 left-0 right-0 bottom-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-gray-950/80">
+            <div className="absolute bottom-0 left-0 right-0 z-50 rounded-b-lg border-b border-t border-border bg-white/80 p-4 backdrop-blur-sm dark:bg-gray-950/80">
               <div className="grid grid-cols-2 gap-2">
                 <Button variant="outline" onClick={resetToDefaults} className="w-full">
                   恢复默认值
@@ -480,30 +437,30 @@ const GifGenerator = () => {
 
           {/* 预览区域 */}
           <Card className="relative flex h-[calc(100vh-10rem)] flex-col bg-card md:col-span-1">
-          <CardHeader className="absolute rounded-t-lg left-0 p-4 right-0 top-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-gray-950/80">
-          <CardTitle className="flex items-center justify-between text-lg font-medium">
+            <CardHeader className="absolute left-0 right-0 top-0 z-50 rounded-t-lg border-b bg-white/80 p-4 backdrop-blur-sm dark:bg-gray-950/80">
+              <CardTitle className="flex items-center justify-between text-lg font-medium">
                 <div className="flex items-center gap-2">
                   <Eye className="h-5 w-5" />
                   预览
                 </div>
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-1 items-center justify-center overflow-auto px-4 pt-20 pb-24">
+            <CardContent className="flex flex-1 items-center justify-center overflow-auto px-4 pb-24 pt-20">
               {isGenerating ? (
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <div className="relative">
-                    <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                    <div className="h-16 w-16 animate-spin rounded-full border-4 border-primary/30 border-t-primary"></div>
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="text-xs font-medium text-primary">GIF</span>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground animate-pulse">生成中，请稍候...</p>
+                  <p className="animate-pulse text-sm text-muted-foreground">生成中，请稍候...</p>
                 </div>
               ) : previewGif ? (
                 <img
                   src={previewGif}
                   alt="Generated GIF"
-                  className="max-w-full max-h-[calc(100vh-16rem)] object-contain rounded-lg"
+                  className="max-h-[calc(100vh-16rem)] max-w-full rounded-lg object-contain"
                 />
               ) : (
                 <div className="text-center text-muted-foreground">
@@ -512,8 +469,8 @@ const GifGenerator = () => {
               )}
             </CardContent>
 
-            <div className="absolute border-t rounded-b-lg border-border p-4 left-0 right-0 bottom-0 z-50 border-b bg-white/80 backdrop-blur-sm dark:bg-gray-950/80">
-            <div className="grid grid-cols-2 gap-2">
+            <div className="absolute bottom-0 left-0 right-0 z-50 rounded-b-lg border-b border-t border-border bg-white/80 p-4 backdrop-blur-sm dark:bg-gray-950/80">
+              <div className="grid grid-cols-2 gap-2">
                 <Button
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                   disabled={!previewGif}
