@@ -1,10 +1,19 @@
-# Gifer
+<div align="center">
+  <img src="./src/assets/logo.png" alt="Gifer Logo" width="120" height="120" />
+  
+  # Gifer
+  
+  <p>一个简洁优雅的 GIF 制作工具，基于 Tauri + React + TypeScript 构建</p>
 
-A elegant GIF maker tool built with Tauri 2.0, offering an intuitive user interface and powerful image processing capabilities.
+  <p>
+    <img src="https://img.shields.io/badge/Tauri-2.0-blue?style=flat-square" alt="Tauri" />
+    <img src="https://img.shields.io/badge/React-18-blue?style=flat-square" alt="React" />
+    <img src="https://img.shields.io/badge/TypeScript-5-blue?style=flat-square" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License" />
+  </p>
+</div>
 
-一个优雅的开发者工具箱，基于 Tauri 2.0 构建，提供直观的用户界面和强大的图片处理功能。
-
-![Gifer](./public/screenshots/home.png)
+![Gifer 预览](./public/screenshots/home.png)
 
 ## ✨ Features | 特性
 
